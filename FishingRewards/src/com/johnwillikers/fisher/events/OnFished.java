@@ -45,13 +45,16 @@ public class OnFished implements Listener{
 					meta.setLore(lore);
 					String amount = command.substring(command.length()-1);
 					String item = command.substring(9, command.length()-2);
-					Bukkit.getPlayer(player.getUniqueId()).sendMessage("[Ranked Rods] you have earned " + amount + " " + item);
+					if(item.contains("_")) {
+						item=item.replace("_", " ");
+					}
+					FishingRewards.messagePlayer("you have earned " + amount + " " + item, player);
 					command=command.replace("%p", player.getName());
 					command=command.substring(1);
 					Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), command);
 					player.getItemInHand().setItemMeta(meta);
 				}else {
-					Bukkit.getPlayer(player.getUniqueId()).sendMessage("[Ranked Rods] you didn't get anything, maybe you'll have better luck next time");
+					FishingRewards.messagePlayer("you didn't get anything, maybe you'll have better luck next time", player);
 				}
 				e.setExpToDrop(0);
 				Entity entity = e.getCaught();

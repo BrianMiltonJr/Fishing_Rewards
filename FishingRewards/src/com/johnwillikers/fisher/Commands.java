@@ -42,8 +42,9 @@ public class Commands implements CommandExecutor{
 					meta.setDisplayName("Ranked Rod");
 					rod.setItemMeta(meta);
 					player.getInventory().addItem(rod);
+					FishingRewards.messagePlayer("A Tier " + tier.getTitle() + " fishing rod has been spawned for you", player);
 				}else {
-					player.sendMessage("[Ranked Rod] Tier " + args[1] + " doesn't exist");
+					FishingRewards.messagePlayer("Tier " + args[1] + " doesn't exist", player);
 				}
 				return true;
 			}

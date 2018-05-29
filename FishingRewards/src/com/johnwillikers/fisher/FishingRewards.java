@@ -8,6 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -40,6 +41,12 @@ public class FishingRewards extends JavaPlugin {
 		}
 	}
 	
+	public static void messagePlayer(String msg, Player p) {
+		String body = ChatColor.LIGHT_PURPLE + "[" + ChatColor.GOLD + "Ranked Rods" + ChatColor.LIGHT_PURPLE + "] " + ChatColor.AQUA;
+		body = body + msg;
+		Bukkit.getPlayer(p.getUniqueId()).sendMessage(body);
+	}
+	
 	public void createFilePath() {
 		File file = new File(dir);
 		if(!file.exists()) {
@@ -62,6 +69,14 @@ public class FishingRewards extends JavaPlugin {
 	
 	@Override
 	public void onEnable() {
+		//Start Server Init
+		createFilePath();
+		getServer().getPluginManager().registerEvents(new OnFished(), this);
+		this.getCommand("rr").setExecutor(new Commands());
+		JSONGuy.loadRewards();
+		ObjectLogic.logRewards();
+		JSONGuy.loadTiers();
+		ObjectLogic.logTiers();
 		//Create Custom Ranked Rod Recipe
 		ItemStack rod = new ItemStack(Material.FISHING_ROD);
 		ItemMeta meta = rod.getItemMeta();
@@ -76,14 +91,6 @@ public class FishingRewards extends JavaPlugin {
 		rankedRod.addIngredient(Material.DIAMOND);
 		rankedRod.addIngredient(Material.GLOWSTONE_DUST);
 		getServer().addRecipe(rankedRod);
-		//Start Server Init
-		createFilePath();
-		getServer().getPluginManager().registerEvents(new OnFished(), this);
-		this.getCommand("rr").setExecutor(new Commands());
-		JSONGuy.loadRewards();
-		ObjectLogic.logRewards();
-		JSONGuy.loadTiers();
-		ObjectLogic.logTiers();
 	}
 	
 	@Override
