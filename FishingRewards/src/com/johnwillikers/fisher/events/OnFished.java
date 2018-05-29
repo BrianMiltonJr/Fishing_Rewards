@@ -3,6 +3,7 @@ package com.johnwillikers.fisher.events;
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -21,8 +22,7 @@ public class OnFished implements Listener{
 			Player player = e.getPlayer();
 			ItemStack rod = player.getItemInHand();
 			ItemMeta meta = rod.getItemMeta();
-			String name = meta.getDisplayName();
-			if(name.equalsIgnoreCase("ranked rod")) {
+			if(meta.hasLore()) {
 				List<String> lore = meta.getLore();
 				String tierString = lore.get(1);
 				tierString=tierString.substring(6);
@@ -53,7 +53,9 @@ public class OnFished implements Listener{
 				}else {
 					Bukkit.getPlayer(player.getUniqueId()).sendMessage("[Ranked Rods] you didn't get anything, maybe you'll have better luck next time");
 				}
-				e.setCancelled(true);
+				e.setExpToDrop(0);
+				Entity entity = e.getCaught();
+				entity.remove();
 			}
 		}
 	}
