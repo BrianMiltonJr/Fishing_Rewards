@@ -79,6 +79,7 @@ public class FishingRewards extends JavaPlugin {
 		//Start Server Init
 		createFilePath();
 		getServer().getPluginManager().registerEvents(new OnFished(), this);
+		this.getCommand("rr").setExecutor(new Commands());
 		JSONGuy.loadRewards();
 		ObjectLogic.logRewards();
 		JSONGuy.loadTiers();
