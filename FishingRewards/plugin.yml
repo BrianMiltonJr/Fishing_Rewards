@@ -1,0 +1,5 @@
+name: Fishing_Rewards
+version: 1.0.0
+author: John_Willikers
+main: com.johnwillikers.fisher.FishingRewards
+description: Makes Catching fish pretty lit
