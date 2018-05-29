@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.johnwillikers.fisher.events.OnFished;
@@ -27,6 +28,8 @@ public class FishingRewards extends JavaPlugin {
 	public static File tiersFile = new File(dir + "tiers.json");
 	public static Rewards rewards = new Rewards();
 	public static Tiers tiers = new Tiers();
+	public static FishingRewards plugin;
+	public static String name;
 	
 	public static void print(File file, String string) {
 		try {
@@ -42,7 +45,7 @@ public class FishingRewards extends JavaPlugin {
 	}
 	
 	public static void messagePlayer(String msg, Player p) {
-		String body = ChatColor.LIGHT_PURPLE + "[" + ChatColor.GOLD + "Ranked Rods" + ChatColor.LIGHT_PURPLE + "] " + ChatColor.AQUA;
+		String body = ChatColor.LIGHT_PURPLE + "[" + ChatColor.GOLD + name + ChatColor.LIGHT_PURPLE + "] " + ChatColor.AQUA;
 		body = body + msg;
 		Bukkit.getPlayer(p.getUniqueId()).sendMessage(body);
 	}
@@ -69,6 +72,11 @@ public class FishingRewards extends JavaPlugin {
 	
 	@Override
 	public void onEnable() {
+		this.plugin=this;
+		PluginDescriptionFile pdf = this.getDescription();
+		String rawName=pdf.getName();
+		rawName=rawName.replace("_", " ");
+		this.name=rawName;
 		//Start Server Init
 		createFilePath();
 		getServer().getPluginManager().registerEvents(new OnFished(), this);
