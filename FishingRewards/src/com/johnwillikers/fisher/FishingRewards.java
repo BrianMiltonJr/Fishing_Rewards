@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.johnwillikers.fisher.events.OnFished;
@@ -62,7 +63,7 @@ public class FishingRewards extends JavaPlugin {
 		}*/
 	}
 	
-	public static void log(String name, String type, String msg){
+	public static void log(String type, String msg){
 		//System.out.println("[" + name + "]|" + "[" + level + "] " + msg); deprecated code, old method of sending messages to console, but doesn't support coloring. Left for the lulz
 		Server server = Bukkit.getServer();
 		ConsoleCommandSender console = server.getConsoleSender();
@@ -72,14 +73,19 @@ public class FishingRewards extends JavaPlugin {
 	@SuppressWarnings("static-access")
 	@Override
 	public void onEnable() {
+		PluginDescriptionFile pdf = this.getDescription();
 		this.plugin=this;
+		this.name = ChatColor.LIGHT_PURPLE + pdf.getName().replace("_", " ");
 		createFilePath();
 		getServer().getPluginManager().registerEvents(new OnFished(), this);
 		this.getCommand("rr").setExecutor(new Commands());
+		log(ChatColor.AQUA + "Start Up", "Loading Rewards from rewards.json");
 		JSONGuy.loadRewards();
 		ObjectLogic.logRewards();
+		log(ChatColor.AQUA + "Start Up", "Loading Tiers from tiers.json");
 		JSONGuy.loadTiers();
 		ObjectLogic.logTiers();
+		log(ChatColor.AQUA + "Start Up", "Injecting Custom Recipe");
 		ItemStack rod = new ItemStack(Material.FISHING_ROD);
 		ItemMeta meta = rod.getItemMeta();
 		ArrayList<String> lore = new ArrayList<String>();

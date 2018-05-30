@@ -18,6 +18,12 @@ public class Tier {
 		this.xp = Integer.valueOf(String.valueOf(tier[3]));
 	}
 	
+	/**
+	 * Runs the tier and see's whats the odds of getting an item and formulates it all
+	 * If they rolled the reward then it sends back the command for that item
+	 * if not then it sends back null
+	 * @return
+	 */
 	public String Run() {
 		float percentageRoom=100;
 		Random rand = new Random();

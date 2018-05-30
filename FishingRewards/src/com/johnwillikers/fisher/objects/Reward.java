@@ -29,6 +29,11 @@ public class Reward {
 		}
 	}
 
+	/**
+	 * In charge of sending back the chosen command of a reward. Rewards can have multiple items to choose from.
+	 * This grabs all the items and the percentages and randomly selects one and sends it back.
+	 * @return
+	 */
 	public String getCommand() {
 		float percentageRoom=100;
 		float currentlyStored=0;

@@ -14,6 +14,11 @@ import com.johnwillikers.fisher.objects.Tier;
 
 public class JSONGuy {
 
+	/**
+	 * Returns the string of a file
+	 * @param file
+	 * @return
+	 */
 	public static String readFile(File file) {
 		String contents = null;
 		try {
@@ -33,6 +38,9 @@ public class JSONGuy {
 		return contents;
 	}
 	
+	/**
+	 * Add each tier from the JSONObject of the tiers.json into the Plugins Tiers
+	 */
 	public static void loadTiers() {
 		String rawJSON = readFile(FishingRewards.tiersFile);
 		JSONObject json = new JSONObject(rawJSON);
@@ -44,7 +52,11 @@ public class JSONGuy {
 			FishingRewards.tiers.add(tier);
 		}
 	}
-	
+	/**
+	 * Grab each reward from the Rewards.json and stuff it into the Plugins Rewards.
+	 * This offers dynamic support to allow rewards multiple choice of the actual reward
+	 * as long as the floats equal up to 1
+	 */
 	public static void loadRewards() {
 		//Load the Rewards array
 		String rawJSON = readFile(FishingRewards.rewardsFile);
