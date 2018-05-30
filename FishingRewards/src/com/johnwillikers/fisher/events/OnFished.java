@@ -14,6 +14,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import com.johnwillikers.fisher.FishingRewards;
 import com.johnwillikers.fisher.objects.Tier;
 
+import net.md_5.bungee.api.ChatColor;
+
 public class OnFished implements Listener{
 	
 	@EventHandler
@@ -25,30 +27,25 @@ public class OnFished implements Listener{
 			if(meta.hasLore()) {
 				List<String> lore = meta.getLore();
 				String tierString = lore.get(1);
-				tierString=tierString.substring(6);
+				tierString=tierString.substring(10);
 				Tier tier = FishingRewards.tiers.getTier(tierString);
 				String command = tier.Run();
 				if(!(command==null)) {
 					//Sees if the pole can advance to the next tier
 					int possibleTierString = (Integer.valueOf(tierString)+1);
 					if(FishingRewards.tiers.exists(String.valueOf(possibleTierString))) {
-						int xp = Integer.valueOf(lore.get(0).substring(4));
+						int xp = Integer.valueOf(lore.get(0).substring(8));
 						xp++;
-						lore.set(0, "XP: " + xp);
+						lore.set(0, ChatColor.GREEN + "XP: " + ChatColor.BLUE + xp);
 						Tier possibleTier = FishingRewards.tiers.getTier(String.valueOf(possibleTierString));
 						int possibleXp=possibleTier.getXp();
 						if(xp==possibleXp){
-							lore.set(1, String.valueOf("Tier: " + possibleTier.getTitle()));
-							lore.set(0, "XP: 0");
+							lore.set(1, String.valueOf(ChatColor.GREEN + "Tier: " + ChatColor.BLUE + possibleTier.getTitle()));
+							lore.set(0, ChatColor.GREEN + "XP: " + ChatColor.BLUE + "0");
 						}
 					}
 					meta.setLore(lore);
-					String amount = command.substring(command.length()-1);
-					String item = command.substring(9, command.length()-2);
-					if(item.contains("_")) {
-						item=item.replace("_", " ");
-					}
-					FishingRewards.messagePlayer("you have earned " + amount + " " + item, player);
+					FishingRewards.messagePlayer("you reeled something in", player);
 					command=command.replace("%p", player.getName());
 					command=command.substring(1);
 					Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), command);

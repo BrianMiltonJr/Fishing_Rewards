@@ -10,9 +10,8 @@ import org.bukkit.Server;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.ShapelessRecipe;
+import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.johnwillikers.fisher.events.OnFished;
@@ -45,7 +44,7 @@ public class FishingRewards extends JavaPlugin {
 	}
 	
 	public static void messagePlayer(String msg, Player p) {
-		String body = ChatColor.LIGHT_PURPLE + "[" + ChatColor.GOLD + name + ChatColor.LIGHT_PURPLE + "] " + ChatColor.AQUA;
+		String body = ChatColor.LIGHT_PURPLE + "[" + ChatColor.GOLD + "Ranked Rods" + ChatColor.LIGHT_PURPLE + "] " + ChatColor.AQUA;
 		body = body + msg;
 		Bukkit.getPlayer(p.getUniqueId()).sendMessage(body);
 	}
@@ -70,14 +69,10 @@ public class FishingRewards extends JavaPlugin {
 		console.sendMessage(ChatColor.WHITE + "[" + name + ChatColor.WHITE + "]|" + "[" + type + ChatColor.WHITE + "] " + msg);
 	}
 	
+	@SuppressWarnings("static-access")
 	@Override
 	public void onEnable() {
 		this.plugin=this;
-		PluginDescriptionFile pdf = this.getDescription();
-		String rawName=pdf.getName();
-		rawName=rawName.replace("_", " ");
-		this.name=rawName;
-		//Start Server Init
 		createFilePath();
 		getServer().getPluginManager().registerEvents(new OnFished(), this);
 		this.getCommand("rr").setExecutor(new Commands());
@@ -85,19 +80,20 @@ public class FishingRewards extends JavaPlugin {
 		ObjectLogic.logRewards();
 		JSONGuy.loadTiers();
 		ObjectLogic.logTiers();
-		//Create Custom Ranked Rod Recipe
 		ItemStack rod = new ItemStack(Material.FISHING_ROD);
 		ItemMeta meta = rod.getItemMeta();
 		ArrayList<String> lore = new ArrayList<String>();
-		lore.add("XP: 0");
-		lore.add("Tier: 0");
+		lore.add(ChatColor.GREEN + "XP: " + ChatColor.BLUE + "0");
+		lore.add(ChatColor.GREEN + "Tier: " + ChatColor.BLUE + "0");
 		meta.setLore(lore);
-		meta.setDisplayName("Ranked Rod");
-		rod.setItemMeta(meta);
-		ShapelessRecipe rankedRod = new ShapelessRecipe(rod);
-		rankedRod.addIngredient(Material.FISHING_ROD);
-		rankedRod.addIngredient(Material.DIAMOND);
-		rankedRod.addIngredient(Material.GLOWSTONE_DUST);
+		String name = ChatColor.RED + "Ranked" + ChatColor.GRAY + " Rod";
+		name=ChatColor.BOLD + name;
+		meta.setDisplayName(name);
+		//Create Custom Ranked Rod Recipe
+		ShapedRecipe rankedRod = new ShapedRecipe(rod);
+		rankedRod.shape("EEE","ERE","EEE");
+		rankedRod.setIngredient('E', Material.EMERALD_BLOCK);
+		rankedRod.setIngredient('R', Material.FISHING_ROD);
 		getServer().addRecipe(rankedRod);
 	}
 	
